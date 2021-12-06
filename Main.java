@@ -17,7 +17,7 @@ public class Main extends JFrame implements KeyListener {  //继承KeyListener
 
     public Main() {
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);   //字体大小设置
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);   //defaultBackgroundColor = black;defaultForegroundColor = white;
         add(terminal);
         pack();
         screen = new StartScreen();  //开始屏幕
@@ -28,7 +28,7 @@ public class Main extends JFrame implements KeyListener {  //继承KeyListener
 
     @Override
     public void repaint() {           //刷新UI,合时调用减少刷新率？
-        terminal.clear();
+        terminal.clear();  //不一定需要？可以在下面这一行的displayoutput里面调用？
         screen.displayOutput(terminal);    //画图
         super.repaint();
     }
@@ -41,7 +41,7 @@ public class Main extends JFrame implements KeyListener {  //继承KeyListener
     @Override
     public void keyPressed(KeyEvent e) {
         screen = screen.respondToUserInput(e);
-        repaint();                                 //这里repaint！！
+        repaint();                                 //不一定要在这里repaint
     }
 
     @Override
