@@ -35,7 +35,7 @@ BGM和UI
 
 
 
-AsciiPanel的使用：
+AsciiPanel的使用：这些方法只是修改二维数组。
 以下均可以指定字体颜色(forground)和背景颜色(background)，和坐标
 write函数
 写char到指定位置 **char的值即为在图片中的下标**，用于UI显示：`public AsciiPanel write(char character, int x, int y, Color foreground, Color background) {` 
@@ -53,7 +53,7 @@ Main中JFrame.repaint() 调用了super.repaint()，然后调用其Component—�
 
 不能是：每个player线程独立监听键盘，应该监听完把event放临界区，这样才能保序
 
-AsciiPanel中注解用的很好
+AsciiPanel中注解用的很好，学习了一下
 
 明天早上的任务：
 设计多个线程 实现游戏基本逻辑
@@ -63,4 +63,11 @@ f需要总的计时控制单元Timer？
 地图要有随机性！！！使用maze——generator？
 怪：蛇？不止一格的 还有在周围防地雷/扔炸弹的BOSS
 后续的多人网络对战 实现为组队闯关？或者双方自己给一定数量的金币用来放置不同的怪物守卫自己的家？这样的话是不是能做成塔防或者王者荣耀？
+
+
+TODO都留着，展示设计思路！
+修改：UIPainter 再加一个KeyListner
+
+UI改进：
+http://jiconfont.github.io/#:~:text=jIconFont%20jIconFont%20is%20a%20API%20to%20provide%20icons,Swing%20and%20JavaFX.%20IconFonts%20are%20versatile%20and%20light-weight.
 
