@@ -1,16 +1,17 @@
-package MainWindow;
+package mainWindow;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
 
 import javax.swing.JFrame;
 
-import Game.World;
-import UI.UIPainter;
+import ui.UIPainter;
 import asciiPanel.AsciiFont;
 import asciiPanel.AsciiPanel;
-import screen.Screen;
+import game.World;
 import screen.StartScreen;
+import screen.Screen;
+import ui.UIPainter;
 
 /**
  * The Main Window class of the game 
@@ -21,11 +22,13 @@ public class MainWindow extends JFrame implements KeyListener {
     private Screen screen;
     private UIPainter uiPainter;
     private Timer uiTimer;
+    
 
+    //TODO:给mainWindow加上标题 icon等
     public MainWindow() {
         super();
     //create AsciiPanel,add as a component
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);   //defaultBackgroundColor = black;defaultForegroundColor = white;
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.CP437_32x32);   //defaultBackgroundColor = black;defaultForegroundColor = white;
         add(terminal);
         pack();
 
@@ -41,7 +44,7 @@ public class MainWindow extends JFrame implements KeyListener {
     //UIPainter
         uiPainter=new UIPainter(this);
         uiTimer=new Timer();
-        uiTimer.scheduleAtFixedRate(uiPainter, 0,100);    
+        uiTimer.scheduleAtFixedRate(uiPainter, 0,UIPainter.repaintInterval);    
     }
 
     

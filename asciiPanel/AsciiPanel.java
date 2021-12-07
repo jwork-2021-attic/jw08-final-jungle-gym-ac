@@ -7,7 +7,10 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.ShortLookupTable;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -19,6 +22,24 @@ import javax.swing.JPanel;
  */
 public class AsciiPanel extends JPanel {
     private static final long serialVersionUID = -4167851861147593092L;
+
+    public static Map<Character,String> glyphPathMap=new HashMap<Character,String>();
+    //TODO:cunstomize some characters
+    public static final char playerIndex=(char)96;
+    public static final char floorIndex=(char)224;
+    public static final char wallIndex=(char)225;
+    public static final char monsterIndex=(char)226;
+    //public static final char endPointClosedIndex=(char)227;
+    //public static final String endPointClosedPath="resources/close.png";
+    public static final char endPointOpenIndex= (char)227;
+
+    static{
+        glyphPathMap.put(playerIndex,"resources/wizard.png" );
+        glyphPathMap.put(floorIndex,"resources/floor.png");
+        glyphPathMap.put(wallIndex,"resources/rock.png");
+        glyphPathMap.put(monsterIndex,"resources/devil.png");
+        glyphPathMap.put(endPointOpenIndex,"resources/entrance.png");
+    }
 
     /**
      * The color black (pure black).
@@ -371,10 +392,10 @@ public class AsciiPanel extends JPanel {
 
                 Color bg = backgroundColors[x][y];
                 Color fg = foregroundColors[x][y];
-
-                LookupOp op = setColors(bg, fg);
-                BufferedImage img = op.filter(glyphs[chars[x][y]], null);
-                offscreenGraphics.drawImage(img, x * charWidth, y * charHeight, null);
+                //LookupOp op = setColors(bg, fg);
+                //BufferedImage img = glyphs[chars[x][y]];
+                offscreenGraphics.drawImage(glyphs[floorIndex], x * charWidth, y * charHeight, null);
+                offscreenGraphics.drawImage(glyphs[chars[x][y]], x * charWidth, y * charHeight, null);
 
                 oldBackgroundColors[x][y] = backgroundColors[x][y];
                 oldForegroundColors[x][y] = foregroundColors[x][y];
@@ -386,20 +407,55 @@ public class AsciiPanel extends JPanel {
     }
 
     private void loadGlyphs() {
+
+        BufferedImage custmoImage;
+
         try {
             glyphSprite = ImageIO.read(AsciiPanel.class.getClassLoader().getResource(terminalFontFile));
-        } catch (IOException e) {
+
+            for (int i = 0; i < 256; i++) {   //一行16个
+                int sx = (i % 16) * charWidth;
+                int sy = (i / 16) * charHeight;
+                glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
+                switch(i){
+                    case playerIndex:
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(playerPath));
+                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
+                        charHeight, null);
+                        break;
+                    case floorIndex:
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(floorPath));
+                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
+                        charHeight, null);
+                        break;
+                    case wallIndex:
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(wallPath));
+                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
+                            charHeight, null);
+                        break;
+                    case monsterIndex:
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(monsterPath));
+                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
+                            charHeight, null);
+                        break;
+                    case endPointOpenIndex:
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(endPointOpenPath));
+                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
+                            charHeight, null);
+                        break;
+                    default:
+                        glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth,
+                            sy + charHeight, null);
+                }
+            }
+        }
+        
+
+        catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }
 
-        for (int i = 0; i < 256; i++) {
-            int sx = (i % 16) * charWidth;
-            int sy = (i / 16) * charHeight;
-
-            glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-            glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth,
-                    sy + charHeight, null);
-        }
+        
     }
 
     /**

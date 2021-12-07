@@ -3,26 +3,26 @@ package screen;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 
-import Game.Calabash;
-import Game.Floor;
-import Game.WalkedFloor;
-import Game.World;
 import asciiPanel.AsciiPanel;
+import game.Nothing;
+import game.Player;
+import game.World;
 
 public class WorldScreen extends Screen {
 
     private World world;
-    private Calabash bro;
+    private Player player;
+    //private Color worldBackgroundColor=;
 
     /**
      * @param terminal
      */
     public WorldScreen(AsciiPanel terminal) {
         super(terminal);
-
         world = new World();
-        bro = new Calabash(Color.green,world);
-        world.put(bro, world.maze.getStartX(), world.maze.getStartY());
+        player=world.player;
+        //player = new Player(Color.green,world);
+        //world.put(player, world.map.getStartX(), world.map.getStartY());
         
         //displayOutput();
         //terminal.repaint();
@@ -41,36 +41,27 @@ public class WorldScreen extends Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        //System.out.println("a");
         switch (key.getKeyCode()) {
             case KeyEvent.VK_LEFT:
-                if(bro.getX()>0 && ( world.get(bro.getX()-1, bro.getY()) instanceof Floor) ){
-                    world.put(new WalkedFloor(world),bro.getX(),bro.getY());
-                    bro.moveTo(bro.getX()-1, bro.getY());
-                }
+                player.moveLeft();;
                 break;
             case KeyEvent.VK_RIGHT:
-                if(bro.getX()<World.WIDTH-1 && ( world.get(bro.getX()+1, bro.getY()) instanceof Floor) ){
-                    world.put(new WalkedFloor(world),bro.getX(),bro.getY());
-                    bro.moveTo(bro.getX()+1, bro.getY());
-                }
+                player.moveRight();
                 break;
             case KeyEvent.VK_UP:
-                if(bro.getY()>0 && ( world.get(bro.getX(), bro.getY()-1) instanceof Floor)){
-                    world.put(new WalkedFloor(world),bro.getX(),bro.getY());
-                    bro.moveTo(bro.getX(), bro.getY()-1);
-                }
+                player.moveUp();
                 break;
             case KeyEvent.VK_DOWN:
-                if(bro.getY()<World.HEIGHT+1 && ( world.get(bro.getX(), bro.getY()+1) instanceof Floor)){
-                    world.put(new WalkedFloor(world),bro.getX(),bro.getY());
-                    bro.moveTo(bro.getX(), bro.getY()+1);
-                }
+                player.moveDown();
+                break;
+            default:
                 break;
         }
-    
-        if(world.maze.getEndX()==bro.getX()&& world.maze.getEndY()==bro.getY()){
+        
+        if(world.map.getEndX()==player.getX()&& world.map.getEndY()==player.getY())
             return new RestartScreen(terminal);
-        }
-        return this;
+        else return this;
+    
     }
 }

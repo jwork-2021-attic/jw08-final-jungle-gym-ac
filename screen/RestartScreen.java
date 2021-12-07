@@ -1,13 +1,13 @@
 package screen;
 
 import asciiPanel.AsciiPanel;
+import game.World;
+
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 //import java.util.ArrayList;
 
-import Game.World;
-
-public class RestartScreen extends Screen{
+public class RestartScreen extends Screen {
     
     private int num_of_lines=3;
     private HashMap<String,String> MessageList=new HashMap<String,String>();
@@ -17,7 +17,7 @@ public class RestartScreen extends Screen{
         terminal.clear(' ',AsciiPanel.white,AsciiPanel.white);
         int i=0;
         for(String Message:MessageList.values()){
-            terminal.writeCenter(Message,(World.HEIGHT-num_of_lines)/2+i*2,AsciiPanel.green,AsciiPanel.white);
+            //terminal.writeCenter(Message,(World.HEIGHT-num_of_lines)/2+i*2,AsciiPanel.green,AsciiPanel.white);
             i+=1;
         }
     }
@@ -38,7 +38,7 @@ public class RestartScreen extends Screen{
 
         MessageList.put("win_message", "You WIN!!! Congratulations!");
         MessageList.put("lose_message", "You LOSE!!! Don't give up!");
-        MessageList.put("continue_message", "Press ENTER to challenge new RANDOM Maze...");
+        MessageList.put("continue_message", "Press ENTER to challenge next Stage...");
         MessageList.put("exit_message", "CLOSE the terminal to EXIT...");
         
         //displayOutput();

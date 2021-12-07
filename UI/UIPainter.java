@@ -1,7 +1,8 @@
-package UI;
+package ui;
 import java.time.LocalTime;
 import java.util.TimerTask;
-import MainWindow.MainWindow;
+
+import mainWindow.MainWindow;
 
 /**
  * Controlling the UI of the Game,repaint at a certain frequency in another THREAD. 
@@ -9,9 +10,8 @@ import MainWindow.MainWindow;
  * 
  */
 public class UIPainter extends TimerTask{ //
-    private final int repaintInterval=10;
+    public static final int repaintInterval=33; //in millises
     private MainWindow mainWindow;
-
     public UIPainter(MainWindow mainWindow){
         this.mainWindow=mainWindow;
     }
@@ -23,6 +23,6 @@ public class UIPainter extends TimerTask{ //
 
     public void refresh() {           //刷新UI,定时调用减少刷新率
         mainWindow.repaint();
-        System.out.println(LocalTime.now());
+        //System.out.println(LocalTime.now());
     }
 }

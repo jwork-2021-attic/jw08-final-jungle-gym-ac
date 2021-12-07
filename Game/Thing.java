@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import java.awt.Color;
 
@@ -32,7 +32,7 @@ public class Thing {
         return this.color;
     }
 
-    private char glyph;
+    protected char glyph;
 
     public char getGlyph() {
         return this.glyph;

@@ -1,4 +1,4 @@
-package maze;
+package map;
 public class Node {
     public final int x;
     public final int y;

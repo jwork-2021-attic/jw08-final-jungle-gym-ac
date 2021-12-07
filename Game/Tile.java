@@ -1,7 +1,10 @@
-package Game;
+package game;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Tile<T extends Thing> {
-
+    private final Lock lock = new ReentrantLock();
     private T thing;
     private int xPos;
     private int yPos;
@@ -10,9 +13,19 @@ public class Tile<T extends Thing> {
         return thing;
     }
 
-    public void setThing(T thing) {
-        this.thing = thing;
-        this.thing.setTile(this);
+    public boolean setThing(T thing) {
+        if (lock.tryLock()) {
+            try {
+                this.thing = thing;
+                this.thing.setTile(this);
+            } finally {
+                lock.unlock();
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public int getxPos() {
