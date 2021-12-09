@@ -12,12 +12,12 @@ import asciiPanel.AsciiPanel;
 public abstract class Screen{
     AsciiPanel terminal;
 
-
     /**
      * @param terminal
      */
-    public Screen(AsciiPanel terminal) {
+    public Screen(AsciiPanel terminal,char backgroundImageIndex) {
         this.terminal=terminal;
+        terminal.backgroundImageIndex=backgroundImageIndex;
     }
 
     /**

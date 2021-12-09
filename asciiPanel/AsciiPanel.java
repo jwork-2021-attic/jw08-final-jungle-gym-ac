@@ -25,21 +25,59 @@ public class AsciiPanel extends JPanel {
 
     public static Map<Character,String> glyphPathMap=new HashMap<Character,String>();
     //TODO:cunstomize some characters
-    public static final char playerIndex=(char)96;
-    public static final char floorIndex=(char)224;
-    public static final char wallIndex=(char)225;
-    public static final char monsterIndex=(char)226;
+    public static final char archerIndex=(char)128;
+    public static final char wizardIndex=(char)129; 
+
+    public static final char floorIndex=(char)130;
+    public static final char wallIndex=(char)131;
+    public static final char monsterIndex=(char)132;
     //public static final char endPointClosedIndex=(char)227;
     //public static final String endPointClosedPath="resources/close.png";
-    public static final char endPointOpenIndex= (char)227;
+    public static final char endPointOpenIndex= (char)133;
+
+    public static final char upBowIndex=(char)134;
+    public static final char downBowIndex=(char)135;
+    public static final char leftBowIndex=(char)136;
+    public static final char rightBowIndex=(char)137;
+
+    public static final char upArrowIndex=(char)138;
+    public static final char downArrowIndex=(char)139;
+    public static final char leftArrowIndex=(char)140;
+    public static final char rightArrowIndex=(char)141;
+
+    public static final char upWandIndex=(char)142;
+    public static final char downWandIndex=(char)143;
+    public static final char leftWandIndex=(char)144;
+    public static final char rightWandIndex=(char)145;
+
+
 
     static{
-        glyphPathMap.put(playerIndex,"resources/wizard.png" );
+        glyphPathMap.put(archerIndex,"resources/elf.png" );
+        glyphPathMap.put(wizardIndex,"resources/wizard.png" );
+
         glyphPathMap.put(floorIndex,"resources/floor.png");
         glyphPathMap.put(wallIndex,"resources/rock.png");
         glyphPathMap.put(monsterIndex,"resources/devil.png");
         glyphPathMap.put(endPointOpenIndex,"resources/entrance.png");
+
+        glyphPathMap.put(upBowIndex,"resources/bowUp.png");
+        glyphPathMap.put(downBowIndex,"resources/bowDown.png");
+        glyphPathMap.put(leftBowIndex,"resources/bowLeft.png");
+        glyphPathMap.put(rightBowIndex,"resources/bowRight.png");
+
+        glyphPathMap.put(upArrowIndex,"resources/arrowUp.png");
+        glyphPathMap.put(downArrowIndex,"resources/arrowDown.png");
+        glyphPathMap.put(leftArrowIndex,"resources/arrowLeft.png");
+        glyphPathMap.put(rightArrowIndex,"resources/arrowRight.png");
+
+        glyphPathMap.put(upWandIndex,"resources/magicWandUpRight.png");
+        glyphPathMap.put(downWandIndex,"resources/magicWandDown.png");
+        glyphPathMap.put(leftWandIndex,"resources/magicWandLeft.png");
+        glyphPathMap.put(rightWandIndex,"resources/magicWandUpRight.png");
     }
+
+
 
     /**
      * The color black (pure black).
@@ -141,6 +179,11 @@ public class AsciiPanel extends JPanel {
     private Color[][] oldBackgroundColors;
     private Color[][] oldForegroundColors;
     private AsciiFont asciiFont;
+
+    private char[][] effects;
+    private char[][] oldEffects;
+    public char backgroundImageIndex;
+    public char oldBackgroundImageIndex;
 
     /**
      * Gets the height, in pixels, of a character.
@@ -317,6 +360,7 @@ public class AsciiPanel extends JPanel {
         loadGlyphs();
 
         oldChars = new char[widthInCharacters][heightInCharacters];
+        oldEffects=new char[widthInCharacters][heightInCharacters];
     }
 
     /**
@@ -362,6 +406,9 @@ public class AsciiPanel extends JPanel {
         defaultForegroundColor = white;
 
         chars = new char[widthInCharacters][heightInCharacters];
+        effects=new char[widthInCharacters][heightInCharacters];
+        
+
         backgroundColors = new Color[widthInCharacters][heightInCharacters];
         foregroundColors = new Color[widthInCharacters][heightInCharacters];
 
@@ -386,20 +433,29 @@ public class AsciiPanel extends JPanel {
 
         for (int x = 0; x < widthInCharacters; x++) {
             for (int y = 0; y < heightInCharacters; y++) {
-                if (oldBackgroundColors[x][y] == backgroundColors[x][y]
-                        && oldForegroundColors[x][y] == foregroundColors[x][y] && oldChars[x][y] == chars[x][y])
+                if (//(oldBackgroundColors[x][y] == backgroundColors[x][y]
+                        //&& oldForegroundColors[x][y] == foregroundColors[x][y] && 
+                        oldBackgroundImageIndex==backgroundImageIndex
+                        &&oldChars[x][y] == chars[x][y]
+                        && oldEffects[x][y] == effects[x][y])
                     continue;
 
                 Color bg = backgroundColors[x][y];
                 Color fg = foregroundColors[x][y];
                 //LookupOp op = setColors(bg, fg);
                 //BufferedImage img = glyphs[chars[x][y]];
-                offscreenGraphics.drawImage(glyphs[floorIndex], x * charWidth, y * charHeight, null);
+                offscreenGraphics.drawImage(glyphs[backgroundImageIndex], x * charWidth, y * charHeight, null);
                 offscreenGraphics.drawImage(glyphs[chars[x][y]], x * charWidth, y * charHeight, null);
+                if(effects[x][y]!=0)                
+                    offscreenGraphics.drawImage(glyphs[effects[x][y]], x * charWidth, y * charHeight, null);
+
+
 
                 oldBackgroundColors[x][y] = backgroundColors[x][y];
                 oldForegroundColors[x][y] = foregroundColors[x][y];
                 oldChars[x][y] = chars[x][y];
+                oldEffects[x][y]=effects[x][y];
+                oldBackgroundImageIndex=backgroundImageIndex;
             }
         }
 
@@ -417,40 +473,16 @@ public class AsciiPanel extends JPanel {
                 int sx = (i % 16) * charWidth;
                 int sy = (i / 16) * charHeight;
                 glyphs[i] = new BufferedImage(charWidth, charHeight, BufferedImage.TYPE_INT_ARGB);
-                switch(i){
-                    case playerIndex:
-                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(playerPath));
+                    if(glyphPathMap.containsKey((char)i)){
+                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(glyphPathMap.get((char)i)));
                         glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
                         charHeight, null);
-                        break;
-                    case floorIndex:
-                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(floorPath));
-                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
-                        charHeight, null);
-                        break;
-                    case wallIndex:
-                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(wallPath));
-                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
-                            charHeight, null);
-                        break;
-                    case monsterIndex:
-                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(monsterPath));
-                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
-                            charHeight, null);
-                        break;
-                    case endPointOpenIndex:
-                        custmoImage=ImageIO.read(AsciiPanel.class.getClassLoader().getResource(endPointOpenPath));
-                        glyphs[i].getGraphics().drawImage(custmoImage,0, 0, charWidth, charHeight, 0, 0, charWidth,
-                            charHeight, null);
-                        break;
-                    default:
+                    }
+                    else
                         glyphs[i].getGraphics().drawImage(glyphSprite, 0, 0, charWidth, charHeight, sx, sy, sx + charWidth,
                             sy + charHeight, null);
                 }
-            }
         }
-        
-
         catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }

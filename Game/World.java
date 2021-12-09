@@ -13,8 +13,9 @@ import map.MyMap;
 
 public class World {
 
-    public static final int WIDTH = 26;
-    public static final int HEIGHT = 24;
+    public final int WIDTH = 26;
+    public final int HEIGHT = 24;
+    public int monsterNumberLeft;
     public MyMap map;
     private Tile<Thing>[][] tiles;
     public Player player;
@@ -22,7 +23,7 @@ public class World {
     //private Random rand = new Random();
     //private Color wallColor,floorColor;
 
-    public World() {
+    public World(int playerType) {
 
         map=new MyMap(WIDTH,HEIGHT,0);
 
@@ -40,20 +41,22 @@ public class World {
             }
         }
     //player
-        player=new Player(AsciiPanel.black,this);
-        put(player,map.getStartX(),map.getStartY());
+        player=new Player(this,playerType);
         Thread playerThread=new Thread(player);
         playerThread.start();
         player.run();
     //monsters
         Monster monster;
-        ExecutorService exec = Executors.newFixedThreadPool(map.monsterPositions.size());
-        for (Map.Entry<Integer,Integer> entry: map.monsterPositions.entrySet()){
-            monster=new Monster(AsciiPanel.black, this);
-            put(monster,entry.getKey(),entry.getValue());
-            exec.execute(monster);
+        monsterNumberLeft=map.monsterPositions.size();
+        if(monsterNumberLeft>0){
+            ExecutorService exec = Executors.newFixedThreadPool(map.monsterPositions.size());
+            for (Map.Entry<Integer,Integer> entry: map.monsterPositions.entrySet()){
+                monster=new Monster(this);
+                put(monster,entry.getKey(),entry.getValue());
+                exec.execute(monster);
+            }
+            exec.shutdown();
         }
-        exec.shutdown();
     }
 
     public Thing get(int x, int y) {

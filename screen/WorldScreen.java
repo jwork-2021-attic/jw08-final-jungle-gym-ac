@@ -7,6 +7,7 @@ import asciiPanel.AsciiPanel;
 import game.Nothing;
 import game.Player;
 import game.World;
+import mainWindow.MainWindow;
 
 public class WorldScreen extends Screen {
 
@@ -17,9 +18,10 @@ public class WorldScreen extends Screen {
     /**
      * @param terminal
      */
-    public WorldScreen(AsciiPanel terminal) {
-        super(terminal);
-        world = new World();
+    public WorldScreen(AsciiPanel terminal,int playerType) {
+        super(terminal,AsciiPanel.floorIndex);
+
+        world = new World(playerType);
         player=world.player;
         //player = new Player(Color.green,world);
         //world.put(player, world.map.getStartX(), world.map.getStartY());
@@ -30,11 +32,25 @@ public class WorldScreen extends Screen {
 
     @Override
     public void displayOutput() {
-        for (int x = 0; x < World.WIDTH; x++) {
-            for (int y = 0; y < World.HEIGHT; y++) {
-                terminal.write(world.get(x, y).getGlyph(), x, y, world.get(x, y).getColor());
+        //The GAME area
+        for (int x = 0; x < world.WIDTH; x++) {
+            for (int y = 0; y < world.HEIGHT; y++) {
+                terminal.write(world.get(x, y).getGlyph(), x, y, AsciiPanel.white);  //color unnecessary
             }
         }
+        if(world.monsterNumberLeft==0)
+            terminal.write(AsciiPanel.endPointOpenIndex,world.map.getEndX(),world.map.getEndY());
+        else{ //终点出现了就不显示武器了
+            if(player.weapon.isVisible()){
+                terminal.write(player.weapon.getGlyph(),player.weapon.getX(),player.weapon.getY(),AsciiPanel.white);
+            }  
+        }
+        //the STAT area
+        for(int x=world.WIDTH;x<MainWindow.width;x++)
+            for(int y=0;y<MainWindow.height;y++){
+                terminal.write((char)0,x,y,AsciiPanel.white);
+            }
+        terminal.write("Your HP: "+Integer.toString(world.player.getHp()),world.WIDTH+2,1);
     }
 
     int i = 0;
@@ -58,10 +74,10 @@ public class WorldScreen extends Screen {
             default:
                 break;
         }
-        
-        if(world.map.getEndX()==player.getX()&& world.map.getEndY()==player.getY())
-            return new RestartScreen(terminal);
+        if(player.getHp()==0)
+            return new RestartScreen(terminal,RestartScreen.lose);
+        else if(world.map.getEndX()==player.getX()&& world.map.getEndY()==player.getY() && world.monsterNumberLeft==0)
+            return new RestartScreen(terminal,RestartScreen.win);
         else return this;
-    
     }
 }

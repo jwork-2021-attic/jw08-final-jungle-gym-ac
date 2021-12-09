@@ -69,5 +69,10 @@ TODO都留着，展示设计思路！
 修改：UIPainter 再加一个KeyListner
 
 UI改进：
-http://jiconfont.github.io/#:~:text=jIconFont%20jIconFont%20is%20a%20API%20to%20provide%20icons,Swing%20and%20JavaFX.%20IconFonts%20are%20versatile%20and%20light-weight.
 
+
+
+TODO:武器的自动转向
+弓箭 碰到物体不是Nothing就自动消失
+火球 碰到物体炸开成3x3
+这三者怎么画？武器在repaint()中判断一下是否visible然后画即可。

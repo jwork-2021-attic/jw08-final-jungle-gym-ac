@@ -4,17 +4,17 @@ import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Creature extends Thing implements Runnable{
+public abstract class Creature extends Thing implements Runnable{
 
     protected int hp,damage;
     private boolean cooling=false;
     private int attackInterval;//in milliseconds
 
-    Creature(Color color, char glyph, World world,int hp,int damage,int attackInterval) {
-        super(color, glyph, world);
+    Creature(char glyph, World world,int hp,int damage,int attackInterval) {
+        super(glyph, world);
         this.hp=hp;
         this.damage=damage;
-        attackInterval=attackInterval;
+        this.attackInterval=attackInterval;
     }
 
     public void moveUp() {
@@ -25,7 +25,7 @@ public class Creature extends Thing implements Runnable{
         }
     }
     public void moveDown(){
-        if(getY()<World.HEIGHT-1 && ( world.get(getX(),getY()+1) instanceof Nothing )){
+        if(getY()<world.HEIGHT-1 && ( world.get(getX(),getY()+1) instanceof Nothing )){
             if(world.put(this,getX(),getY()+1)){
                 world.empty(getX(),getY()-1);
             }
@@ -39,7 +39,7 @@ public class Creature extends Thing implements Runnable{
         }
     }
     public void moveRight(){
-        if(getX()<World.WIDTH-1 && ( world.get(getX()+1,getY()) instanceof Nothing )){
+        if(getX()<world.WIDTH-1 && ( world.get(getX()+1,getY()) instanceof Nothing )){
             if(world.put(this,getX()+1,getY())){
                 world.empty(getX()-1,getY());
             }
@@ -58,7 +58,9 @@ public class Creature extends Thing implements Runnable{
         return hp;
     }
 
-    public void gethurt(int damage){
+    //abstract public void attack(int attack);
+
+    public void getAttacked(int damage){
         hp-=damage;
     }
 

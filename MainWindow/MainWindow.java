@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import ui.UIPainter;
@@ -22,13 +23,18 @@ public class MainWindow extends JFrame implements KeyListener {
     private Screen screen;
     private UIPainter uiPainter;
     private Timer uiTimer;
-    
+    public int gameStage;
+    public static final int width=45;
+    public static final int height=24;
+    //TODO:different gameStages Restartscreen()中win了，gameStage++
 
     //TODO:给mainWindow加上标题 icon等
     public MainWindow() {
-        super();
+        super("Roguelike");
+        setIconImage(new ImageIcon(MainWindow.class.getClassLoader().getResource("resources/icon.png")).getImage());
+
     //create AsciiPanel,add as a component
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.CP437_32x32);   //defaultBackgroundColor = black;defaultForegroundColor = white;
+        terminal = new AsciiPanel(width, height, AsciiFont.CP437_32x32);   //defaultBackgroundColor = black;defaultForegroundColor = white;
         add(terminal);
         pack();
 
@@ -50,7 +56,6 @@ public class MainWindow extends JFrame implements KeyListener {
     
     @Override
     public void repaint() {
-        //terminal.clear();
         screen.displayOutput();
         super.repaint();
     }

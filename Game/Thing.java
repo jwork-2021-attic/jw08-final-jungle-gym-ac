@@ -20,17 +20,17 @@ public class Thing {
         this.tile = tile;
     }
 
-    Thing(Color color, char glyph, World world) {
-        this.color = color;
+    protected Thing(char glyph, World world) {
+        //this.color = color;
         this.glyph = glyph;
         this.world = world;
     }
 
-    private final Color color;
+    //private final Color color;
 
-    public Color getColor() {
+    /*public Color getColor() {
         return this.color;
-    }
+    }*/
 
     protected char glyph;
 
