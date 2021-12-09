@@ -50,6 +50,9 @@ public class AsciiPanel extends JPanel {
     public static final char leftWandIndex=(char)144;
     public static final char rightWandIndex=(char)145;
 
+    public static final char fireballIndex=(char)146;
+    public static final char fireIndex=(char)147;
+    public static final char electricIndex=(char)148;
 
 
     static{
@@ -75,6 +78,11 @@ public class AsciiPanel extends JPanel {
         glyphPathMap.put(downWandIndex,"resources/magicWandDown.png");
         glyphPathMap.put(leftWandIndex,"resources/magicWandLeft.png");
         glyphPathMap.put(rightWandIndex,"resources/magicWandUpRight.png");
+
+        glyphPathMap.put(fireballIndex,"resources/fireball.png");
+        glyphPathMap.put(fireIndex, "resources/flame.png");
+        glyphPathMap.put(electricIndex,"resources/electricity.png");
+
     }
 
 
@@ -446,10 +454,8 @@ public class AsciiPanel extends JPanel {
                 //BufferedImage img = glyphs[chars[x][y]];
                 offscreenGraphics.drawImage(glyphs[backgroundImageIndex], x * charWidth, y * charHeight, null);
                 offscreenGraphics.drawImage(glyphs[chars[x][y]], x * charWidth, y * charHeight, null);
-                if(effects[x][y]!=0)                
+                if(effects[x][y]!=(char)0)                
                     offscreenGraphics.drawImage(glyphs[effects[x][y]], x * charWidth, y * charHeight, null);
-
-
 
                 oldBackgroundColors[x][y] = backgroundColors[x][y];
                 oldForegroundColors[x][y] = foregroundColors[x][y];
@@ -485,9 +491,7 @@ public class AsciiPanel extends JPanel {
         }
         catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
-        }
-
-        
+        }       
     }
 
     /**
@@ -796,6 +800,31 @@ public class AsciiPanel extends JPanel {
         backgroundColors[x][y] = background;
         cursorX = x + 1;
         cursorY = y;
+        return this;
+    }
+
+
+    /**
+     * Write a character to the specified position with the specified foreground and
+     * background colors. 
+     * 
+     * @param character  the character to write
+     * @param x          the distance from the left to begin writing from
+     * @param y          the distance from the top to begin writing from
+     * @return this for convenient chaining of method calls
+     */
+    public AsciiPanel writeEffect(char character, int x, int y) {
+        if (character < 0 || character >= glyphs.length)
+            throw new IllegalArgumentException(
+                    "character " + character + " must be within range [0," + glyphs.length + "].");
+
+        if (x < 0 || x >= widthInCharacters)
+            throw new IllegalArgumentException("x " + x + " must be within range [0," + widthInCharacters + ")");
+
+        if (y < 0 || y >= heightInCharacters)
+            throw new IllegalArgumentException("y " + y + " must be within range [0," + heightInCharacters + ")");
+
+        effects[x][y] = character;
         return this;
     }
 

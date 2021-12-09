@@ -10,7 +10,7 @@ import mainWindow.MainWindow;
  * 
  */
 public class UIPainter extends TimerTask{ //
-    public static final int repaintInterval=33; //in millises
+    public static final int repaintInterval=20; //in millises
     private MainWindow mainWindow;
     public UIPainter(MainWindow mainWindow){
         this.mainWindow=mainWindow;

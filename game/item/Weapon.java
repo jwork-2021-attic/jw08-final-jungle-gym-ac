@@ -27,6 +27,8 @@ public abstract class Weapon extends Thing{
                  (world.get(getX(), getY()) instanceof Nothing); 
     }
 
+    abstract public void attack();
+
     public void directionUp(){
         this.direction=up;
     }   

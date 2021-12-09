@@ -24,7 +24,7 @@ public class MainWindow extends JFrame implements KeyListener {
     private UIPainter uiPainter;
     private Timer uiTimer;
     public int gameStage;
-    public static final int width=45;
+    public static final int width=50;
     public static final int height=24;
     //TODO:different gameStages Restartscreen()中win了，gameStage++
 
@@ -39,7 +39,7 @@ public class MainWindow extends JFrame implements KeyListener {
         pack();
 
     //Screen
-        screen = new StartScreen(terminal);  //开始屏幕
+        screen = new StartScreen(terminal,this,1);  //开始屏幕
         //uiPainter.refresh();
 
     //keyListener
@@ -68,12 +68,16 @@ public class MainWindow extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        screen = screen.respondToUserInput(e);
+        screen.respondToUserInput(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    public void setScreen(Screen screen){
+        this.screen=screen;
     }
 
     public static void main(String[] args) {

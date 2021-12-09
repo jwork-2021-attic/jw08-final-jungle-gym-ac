@@ -4,11 +4,13 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import asciiPanel.AsciiPanel;
+import game.bullet.Lightning;
+import game.item.Weapon;
 
 public class Monster extends Creature{
     private static int monsterHP= 200;
     private static int monsterDamage=50;
-    private static int attackInterval= 500;//in milliseconds
+    private static int attackInterval= 600;//in milliseconds
     private static int range = 5;
     Random rand=new Random();
     
@@ -23,8 +25,9 @@ public class Monster extends Creature{
                 TimeUnit.MILLISECONDS.sleep(500);
                 action();
             }
+            world.empty(getX(), getY());
             world.monsterNumberLeft--;
-            //TODO:放在临界区？
+            //TODO:monsterNumberLeft--放在临界区？
         }
         catch (InterruptedException e) { System.err.println("Interrupted");  }
     }
@@ -32,7 +35,8 @@ public class Monster extends Creature{
     protected void action(){
         if(getX()==world.player.getX()&&getY()<world.player.getY()){
             if(world.player.getY()-getY()<=range){
-                //down
+                world.addBullet(new Lightning(world, damage, range, Weapon.down, getX(), getY()+1));
+
             }
             else {
                 moveDown();
@@ -40,7 +44,7 @@ public class Monster extends Creature{
         }
         else if(getX()==world.player.getX()&&getY()>world.player.getY()){
             if(getY()-world.player.getY()<=range){
-                //up
+                world.addBullet(new Lightning(world, damage, range, Weapon.up, getX(), getY()-1));
             }
             else{
                 moveUp();
@@ -48,7 +52,7 @@ public class Monster extends Creature{
         } 
         else if(getY()==world.player.getY()&&getX()<world.player.getX()){
             if(world.player.getX()-getX()<=range){
-                //right
+                world.addBullet(new Lightning(world, damage, range, Weapon.right, getX()+1, getY()));
             }
             else{
                 moveRight();
@@ -56,7 +60,7 @@ public class Monster extends Creature{
         }
         else if(getY()==world.player.getY()&&getX()>world.player.getX()){
             if(getX()-world.player.getX()<=range){
-                //left
+                world.addBullet(new Lightning(world, damage, range, Weapon.left, getX()-1, getY()));
             }
             else{
                 moveLeft();

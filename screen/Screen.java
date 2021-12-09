@@ -3,6 +3,7 @@ package screen;
 import java.awt.event.KeyEvent;
 
 import asciiPanel.AsciiPanel;
+import mainWindow.MainWindow;
 
 /**
  *
@@ -11,12 +12,16 @@ import asciiPanel.AsciiPanel;
  */
 public abstract class Screen{
     AsciiPanel terminal;
+    MainWindow mainWindow;
+    int gameStage;
 
     /**
      * @param terminal
      */
-    public Screen(AsciiPanel terminal,char backgroundImageIndex) {
+    public Screen(AsciiPanel terminal,MainWindow mainWindow,char backgroundImageIndex,int gameStage) {
         this.terminal=terminal;
+        this.mainWindow=mainWindow;
+        this.gameStage=gameStage;
         terminal.backgroundImageIndex=backgroundImageIndex;
     }
 
@@ -25,5 +30,5 @@ public abstract class Screen{
      */
     abstract public void displayOutput();
 
-    abstract public Screen respondToUserInput(KeyEvent key);
+    abstract public void respondToUserInput(KeyEvent key);
 }

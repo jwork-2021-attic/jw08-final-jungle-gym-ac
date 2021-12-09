@@ -38,6 +38,7 @@ public class Thing {
         return this.glyph;
     }
 
-   
+    public void getAttacked(int damage){
+    }
 
 }

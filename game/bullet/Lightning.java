@@ -1,24 +1,24 @@
 package game.bullet;
 
 import asciiPanel.AsciiPanel;
-import game.Monster;
 import game.Nothing;
+import game.Player;
 import game.Thing;
 import game.World;
 import game.item.Weapon;
 
-public class Arrow extends Bullet{
-    public static final int flyInterval=200;
-    public Arrow(World world, int damage,int range,int direction,int x,int y){
+public class Lightning extends Bullet{
+    public static final int flyInterval=600;
+    public Lightning(World world, int damage,int range,int direction,int x,int y){
         super(world, damage, range, direction, x, y,flyInterval);
-        this.upGlyph=AsciiPanel.upArrowIndex;
-        this.downGlyph=AsciiPanel.downArrowIndex;
-        this.leftGlyph=AsciiPanel.leftArrowIndex;
-        this.rightGlyph=AsciiPanel.rightArrowIndex;
+        this.upGlyph=AsciiPanel.electricIndex;
+        this.downGlyph=AsciiPanel.electricIndex;
+        this.leftGlyph=AsciiPanel.electricIndex;
+        this.rightGlyph=AsciiPanel.electricIndex;
     }
     @Override
     public void run() {
-        //out of map?
+        //out of map? game finished?
         if(!isVisible()){ 
             cancel();
             return;
@@ -26,7 +26,7 @@ public class Arrow extends Bullet{
         //HIT Something?
         Thing thing=world.get(x, y);
         if( !(thing instanceof Nothing)){
-            if(thing instanceof Monster)thing.getAttacked(damage);
+            if(thing instanceof Player)thing.getAttacked(damage);
             x=-1;
             y=-1;
             cancel();
@@ -47,7 +47,7 @@ public class Arrow extends Bullet{
                 x+=1;
                 break;
         }
-        range-=1;
+        range--;
         //out of map?
         if(!isVisible()){ 
             cancel();
@@ -56,7 +56,7 @@ public class Arrow extends Bullet{
         //HIT something?
         thing=world.get(x, y);
         if( !(thing instanceof Nothing)){
-            if(thing instanceof Monster)thing.getAttacked(damage);
+            if(thing instanceof Player)thing.getAttacked(damage);
             x=-1;
             y=-1;
             cancel();

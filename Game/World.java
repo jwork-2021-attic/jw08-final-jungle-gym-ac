@@ -2,11 +2,15 @@ package game;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimerTask;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import java.util.Timer;
+
 import asciiPanel.AsciiPanel;
+import game.bullet.Bullet;
 
 import java.awt.Color;
 import map.MyMap;
@@ -19,13 +23,13 @@ public class World {
     public MyMap map;
     private Tile<Thing>[][] tiles;
     public Player player;
+    public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     
     //private Random rand = new Random();
     //private Color wallColor,floorColor;
 
-    public World(int playerType) {
-
-        map=new MyMap(WIDTH,HEIGHT,0);
+    public World(int playerType,int gameStage) {
+        map=new MyMap(WIDTH,HEIGHT,gameStage);
 
         if (tiles == null) {
             tiles = new Tile[WIDTH][HEIGHT];
@@ -69,5 +73,8 @@ public class World {
 
     public void empty(int x,int y){
         this.tiles[x][y].setThing(new Nothing(this));
+    }
+    public void addBullet(Bullet bullet){
+        bullets.add(bullet);
     }
 }

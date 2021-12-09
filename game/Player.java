@@ -33,7 +33,7 @@ public class Player extends Creature{
     }
     
     public void attack(){
-
+        weapon.attack();
     }
 
     @Override
@@ -62,6 +62,6 @@ public class Player extends Creature{
 
     @Override 
     public void run(){
-        //while(hp>0);
+        //TODO:每格一定时间查看是否有键盘送来的信息，并处理？
     }
 }

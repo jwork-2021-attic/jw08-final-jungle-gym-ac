@@ -6,8 +6,8 @@ import mainWindow.MainWindow;
 
 public class StartScreen extends RestartScreen {
 
-    public StartScreen(AsciiPanel terminal){
-        super(terminal,RestartScreen.lose);
+    public StartScreen(AsciiPanel terminal,MainWindow mainWindow,int gameStage){
+        super(terminal,mainWindow,RestartScreen.lose,gameStage);
     }
     @Override
     public void displayOutput() {

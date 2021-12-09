@@ -18,8 +18,12 @@ public class RestartScreen extends Screen {
     
     @Override
     public void displayOutput(){
-        terminal.writeCenter(MessageList.get("icon"),MainWindow.height/2-4,AsciiPanel.green,AsciiPanel.white);
-        terminal.writeCenter(MessageList.get("title"),MainWindow.height/2-3,AsciiPanel.green,AsciiPanel.white);
+        for(int x=0;x<MainWindow.width;x++)
+        for(int y=0;y<MainWindow.height;y++){
+            terminal.write((char)0,x,y,AsciiPanel.white);
+        }
+        //terminal.writeCenter(MessageList.get("icon"),MainWindow.height/2-4,AsciiPanel.green,AsciiPanel.white);
+        //erminal.writeCenter(MessageList.get("title"),MainWindow.height/2-3,AsciiPanel.green,AsciiPanel.white);
         if(state==win)
             terminal.writeCenter(MessageList.get("win_message"),MainWindow.height/2-1,AsciiPanel.green,AsciiPanel.white);
         else
@@ -42,16 +46,16 @@ public class RestartScreen extends Screen {
      * 
      * @param terminal
      */
-    public RestartScreen(AsciiPanel terminal,int state){
-        super(terminal,(char)0);
+    public RestartScreen(AsciiPanel terminal,MainWindow mainWindow,int state,int gameStage){
+        super(terminal,mainWindow,(char)0,gameStage);
         this.state=state;
 
         String icon="";
         for(int i=0;i<6;i++)  icon+=Character.toString((char)AsciiPanel.archerIndex+i);
         MessageList.put("icon",icon);
         MessageList.put("title", "Roguelike");
-        MessageList.put("lose_message", "You LOSE!!! Don't give up!");
-        MessageList.put("win_message","You WIN!!! Congratulations!");
+        MessageList.put("lose_message", "You DIED!!!Try STAGE "+Integer.toString(gameStage) +" AGAIN!");
+        MessageList.put("win_message","You WIN!!! Challenge STAGE "+Integer.toString(gameStage)+"!");
         MessageList.put("archer_message","Choose "+Character.toString(AsciiPanel.archerIndex)+" ->press A");
         MessageList.put("wizard_message","Choose "+Character.toString(AsciiPanel.wizardIndex)+" ->press B");
         MessageList.put("exit_message", "CLOSE the terminal to EXIT...");
@@ -61,14 +65,16 @@ public class RestartScreen extends Screen {
     }
 
     @Override
-    public Screen respondToUserInput(KeyEvent key) {
+    public void respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()) {
             case KeyEvent.VK_A:
-                return new WorldScreen(terminal,Player.ARCHER);
+                mainWindow.setScreen(new WorldScreen(terminal,mainWindow,Player.ARCHER,gameStage));
+                break;
             case KeyEvent.VK_B:
-                return new WorldScreen(terminal,Player.WIZARD);
+                mainWindow.setScreen(new WorldScreen(terminal,mainWindow,Player.WIZARD,gameStage));
+                break;
             default:
-                return this;
+                return;
         }
     }
 }

@@ -60,6 +60,7 @@ public abstract class Creature extends Thing implements Runnable{
 
     //abstract public void attack(int attack);
 
+    @Override
     public void getAttacked(int damage){
         hp-=damage;
     }
@@ -73,4 +74,5 @@ public abstract class Creature extends Thing implements Runnable{
         };
         new Timer().schedule(task, attackInterval);;
     }
+    //TODO:cooling
 }
