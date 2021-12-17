@@ -1,10 +1,12 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=6521930&assignment_repo_type=AssignmentRepo)
 # jw08
+游戏视频地址:
+代码位于**Game**分支下
+报告位于**Report**分支下
 
 ## 代码
 
 请综合jw04-jw07所有要求，完成一个完整的图形化网络对战游戏。所有提交的作业将统一展出，由各位同学相互打分。
-
 
 ## 报告
 
