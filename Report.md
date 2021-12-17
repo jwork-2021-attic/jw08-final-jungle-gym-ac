@@ -76,3 +76,27 @@ TODO:武器的自动转向
 弓箭 碰到物体不是Nothing就自动消失
 火球 碰到物体炸开成3x3
 这三者怎么画？武器在repaint()中判断一下是否visible然后画即可。
+
+Icon:
+https://www.flaticon.com/
+https://limezu.itch.io/rpg-arsenal
+https://momentaryunicorn.itch.io/momentary-unicorns-evolving-bows-32x32
+
+Timer:
+https://www.baeldung.com/java-timer-and-timertask
+
+JFrame:
+https://www.javatpoint.com/java-jframe
+
+多线程使用了：
+synchronized method
+synchronized block
+reentrant clock
+
+BOSS 占四个格子 在天上飞！周围一圈散射
+
+音乐：
+https://opengameart.org/content/4-chiptunes-adventure
+
+Boss:
+向player发射？
