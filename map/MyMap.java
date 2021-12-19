@@ -71,7 +71,7 @@ public class MyMap {
         }
     }
     public void generateMonsters(int gameStage){
-        int totalMonsterNumber=10+5*gameStage;
+        int totalMonsterNumber=15+5*gameStage;
         int countMonsterNumber=totalMonsterNumber;
         for (int i = 0; i < width; i++) 
             for (int j = 0; j < height; j++){
